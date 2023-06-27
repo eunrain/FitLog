@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:fitlog/components/appbar.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -29,29 +30,17 @@ class _LogInState extends State<LogIn> {
       if (response.statusCode == 200) {
         print('Login successful');
       } else {
-        print('login failed');
+        print('Login failed');
       }
     } catch (e) {
-      print('An error: $e');
+      print('An error occurred: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'FitLog',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {},
-        ),
-      ),
+      appBar: const MyAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -71,7 +60,7 @@ class _LogInState extends State<LogIn> {
               ),
               obscureText: true,
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 25.0),
             TextButton(
               child: const Text('LogIn'),
               onPressed: () {
@@ -80,7 +69,9 @@ class _LogInState extends State<LogIn> {
             ),
             TextButton(
               child: const Text('SignUp'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/signUp');
+              },
             ),
           ],
         ),
