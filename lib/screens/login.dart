@@ -1,17 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
   @override
   State<LogIn> createState() {
-    return _LoginState();
+    return _LogInState();
   }
 }
 
-class _LoginState extends State<LogIn> {
+class _LogInState extends State<LogIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<void> login() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    String url = 'http://test-api.sparta99.shop/api/members/login';
+
+    try {
+      Response response = await Dio().post(
+        url,
+        data: {'memberName': email, 'password': password},
+      );
+
+      if (response.statusCode == 200) {
+        print('Login successful');
+      } else {
+        print('login failed');
+      }
+    } catch (e) {
+      print('An error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +75,7 @@ class _LoginState extends State<LogIn> {
             TextButton(
               child: const Text('LogIn'),
               onPressed: () {
-                String email = _emailController.text;
-                String password = _passwordController.text;
+                login();
               },
             ),
             TextButton(
