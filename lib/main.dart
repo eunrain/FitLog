@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:fitlog/screens/login_screen.dart';
 import 'package:fitlog/screens/signup_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fitlog/provider/provider.dart';
 
 void main() async {
   await dotenv.load();
@@ -13,16 +15,19 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FitLog App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: MaterialApp(
+        title: 'FitLog App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const LogIn(),
+        routes: {
+          '/logIn': (context) => const LogIn(),
+          '/signUp': (context) => const SignUp(),
+        },
       ),
-      home: const LogIn(),
-      routes: {
-        '/logIn': (context) => const LogIn(),
-        '/signUp': (context) => const SignUp(),
-      },
     );
   }
 }

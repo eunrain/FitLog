@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/utility/validator.dart';
 import 'package:fitlog/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:fitlog/provider/provider.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -17,6 +19,23 @@ class _LogInState extends State<LogIn> {
   final _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Future login() async {
+    if (_formKey.currentState!.validate()) {
+      final response = await AuthService().postLogin(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      if (response != null) {
+        final token = response.headers['authorization']?.first ?? '';
+        if (!mounted) return;
+        Provider.of<AuthProvider>(context, listen: false).getToken(token);
+        return response;
+      }
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +74,8 @@ class _LogInState extends State<LogIn> {
               ),
               const SizedBox(height: 25.0),
               TextButton(
+                onPressed: login,
                 child: const Text('LogIn'),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    AuthService().postLogin(
-                      _emailController.text,
-                      _passwordController.text,
-                    );
-                  }
-                },
               ),
               TextButton(
                 child: const Text('SignUp'),

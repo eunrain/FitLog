@@ -13,13 +13,7 @@ class AuthService {
           'password': password,
         },
       );
-      print(response.headers);
-
-      if (response.statusCode == 200) {
-        print('Login successful');
-      } else {
-        print('Login failed');
-      }
+      return response;
     } catch (e) {
       print('An error occurred: $e');
     }
