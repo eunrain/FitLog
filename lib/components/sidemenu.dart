@@ -1,3 +1,4 @@
+import 'package:fitlog/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {
@@ -27,7 +28,14 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Main page'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Text('My page'),
