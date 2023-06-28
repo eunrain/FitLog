@@ -22,7 +22,7 @@ class _LogInState extends State<LogIn> {
 
   Future login() async {
     if (_formKey.currentState!.validate()) {
-      final response = await AuthService().postLogin(
+      final response = await AuthService().postLogIn(
         _emailController.text,
         _passwordController.text,
       );
@@ -54,7 +54,7 @@ class _LogInState extends State<LogIn> {
                   labelText: 'Email',
                 ),
                 validator: (value) {
-                  if (value == null || !Validator.isValidEmail(value)) {
+                  if (value == null) {
                     return '유효한 이메일 형식이 아닙니다';
                   }
                 },
