@@ -1,3 +1,4 @@
+import 'package:fitlog/components/sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/utility/validator.dart';
@@ -23,6 +24,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
+      drawer: const SideMenu(),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(

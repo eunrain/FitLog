@@ -18,7 +18,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: IconButton(
         icon: const Icon(Icons.menu),
-        onPressed: () {},
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
       ),
     );
   }
