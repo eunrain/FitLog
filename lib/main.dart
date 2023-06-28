@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fitlog/screens/login_screen.dart';
 import 'package:fitlog/screens/signup_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() => runApp(const Home());
+void main() async {
+  await dotenv.load();
+  runApp(const Home());
+}
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -16,7 +20,7 @@ class Home extends StatelessWidget {
       ),
       home: const LogIn(),
       routes: {
-        '/login': (context) => const LogIn(),
+        '/logIn': (context) => const LogIn(),
         '/signUp': (context) => const SignUp(),
       },
     );

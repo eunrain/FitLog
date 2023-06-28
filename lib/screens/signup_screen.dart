@@ -43,6 +43,12 @@ class _SignUpState extends State<SignUp> {
               child: const Text('SignUp'),
               onPressed: () {},
             ),
+            TextButton(
+              child: const Text('LogIn'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/logIn');
+              },
+            ),
           ],
         ),
       ),
