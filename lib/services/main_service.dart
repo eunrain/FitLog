@@ -31,37 +31,34 @@ class MainService {
         print('식단 추가 실패');
       }
     } catch (e) {
-      print('오류 : $e');
+      print('postMeal : $e');
     }
   }
 
-//   Future getMeal() async {
-//     final url = '${dotenv.env['API_URL']}/todos';
+  Future getMeal(BuildContext context) async {
+    final url = '${dotenv.env['API_URL']}/todos';
 
-//     final data = {
-//       "priority": 1,
-//       "title": meal,
-//       "subTitle": "부제목",
-//       "content": "내용",
-//       "checked": true
-//     };
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
 
-//     final token = Provider.of<AuthProvider>(context, listen: false).token;
+    try {
+      Response response = await Dio().get(
+        url,
+        options: Options(headers: {'Authorization': token}),
+      );
 
-//     try {
-//       Response response = await Dio().post(
-//         url,
-//         data: data,
-//         options: Options(headers: {'Authorization': token}),
-//       );
-
-//       if (response.statusCode == 200) {
-//         print('식단 추가 성공');
-//       } else {
-//         print('식단 추가 실패');
-//       }
-//     } catch (e) {
-//       print('오류 : $e');
-//     }
-//   }
+      if (response.statusCode == 200) {
+        print('식단 가져와따');
+        final mealData = response.data as List<dynamic>;
+        final meals =
+            mealData.map((meal) => meal['content'] as String).toList();
+        return meals;
+      } else {
+        print('식단 없따');
+        return [];
+      }
+    } catch (e) {
+      print('getMeal : $e');
+      return [];
+    }
+  }
 }

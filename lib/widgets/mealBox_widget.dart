@@ -1,11 +1,19 @@
+import 'package:fitlog/provider/provider.dart';
 import 'package:fitlog/services/main_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MealBox extends StatefulWidget {
-  const MealBox({super.key, required this.date, required this.mealType});
+  const MealBox({
+    Key? key,
+    required this.date,
+    required this.mealType,
+    required this.meals,
+  }) : super(key: key);
 
   final DateTime date;
   final String mealType;
+  final List<String> meals;
 
   @override
   State<MealBox> createState() {
@@ -15,13 +23,6 @@ class MealBox extends StatefulWidget {
 
 class _MealBoxState extends State<MealBox> {
   String meal = '';
-  late String mealType;
-
-  @override
-  void initState() {
-    super.initState();
-    mealType = widget.mealType;
-  }
 
   void _mealInput() {
     showDialog(
@@ -35,7 +36,9 @@ class _MealBoxState extends State<MealBox> {
               children: [
                 TextField(
                   onChanged: (value) {
-                    meal = value;
+                    setState(() {
+                      meal = value;
+                    });
                   },
                   decoration: const InputDecoration(
                     hintText: '식단 입력',
@@ -47,7 +50,12 @@ class _MealBoxState extends State<MealBox> {
           actions: [
             TextButton(
               onPressed: () {
-                MainService().postMeal(meal, mealType, context);
+                MainService()
+                    .postMeal(meal, widget.mealType, context)
+                    .then((_) {
+                  Provider.of<MealProvider>(context, listen: false)
+                      .getMeals(context); // 데이터가 추가되면 getMeals 호출하여 상태 업데이트
+                });
                 Navigator.pop(context);
               },
               child: const Text('추가'),
@@ -73,26 +81,27 @@ class _MealBoxState extends State<MealBox> {
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.add, color: Colors.blue),
-            const SizedBox(height: 5),
-            Text(
-              widget.mealType,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 5),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: meals.length,
-            //     itemBuilder: (context, index) {
-            //       return Text(meals[index]);
-            //     },
-            //   ),
-            // ),
-          ],
+          children: widget.meals.isEmpty
+              ? [
+                  const Icon(Icons.add, color: Colors.blue),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.mealType,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ]
+              : [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: widget.meals.length,
+                    itemBuilder: (context, index) {
+                      return Text(widget.meals[index]);
+                    },
+                  ),
+                ],
         ),
       ),
     );
