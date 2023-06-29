@@ -5,6 +5,7 @@ import 'package:fitlog/utility/validator.dart';
 import 'package:fitlog/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:fitlog/provider/provider.dart';
+import 'package:fitlog/screens/home_screen.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -32,10 +33,36 @@ class _LogInState extends State<LogIn> {
         final token = response.headers['authorization']?.first ?? '';
         if (!mounted) return;
         Provider.of<AuthProvider>(context, listen: false).getToken(token);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const HomeScreen()));
         return response;
+      } else {
+        _showErrorDialog();
       }
       return null;
     }
+  }
+
+  void _showErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('로그인 실패'),
+          content: const Text('아이디와 비밀번호를 확인해주세요.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
