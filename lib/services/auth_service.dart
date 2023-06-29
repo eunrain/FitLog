@@ -13,6 +13,9 @@ class AuthService {
           'password': password,
         },
       );
+      if (response.statusCode == 200) {
+        print('success');
+      }
       return response;
     } catch (e) {
       print('An error occurred: $e');
