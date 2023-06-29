@@ -3,6 +3,7 @@ import 'package:fitlog/widgets/calendar_widget.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/components/sidemenu.dart';
 import 'package:fitlog/widgets/mealBox_widget.dart';
+import 'package:fitlog/services/main_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +15,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // List<String> meals = [];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchMeals();
+  // }
+
+  // Future fetchMeals() async {
+  //   try {
+  //     final List<String> fetchedMeals = await MainService().getMeal();
+  //     setState(() {
+  //       meals = fetchedMeals;
+  //     });
+  //   } catch (e) {
+  //     print('Failed to fetch meals: $e');
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

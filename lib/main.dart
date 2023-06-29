@@ -1,3 +1,4 @@
+import 'package:fitlog/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fitlog/screens/login_screen.dart';
@@ -26,6 +27,7 @@ class Home extends StatelessWidget {
         routes: {
           '/logIn': (context) => const LogIn(),
           '/signUp': (context) => const SignUp(),
+          '/home': (context) => const HomeScreen(),
         },
       ),
     );

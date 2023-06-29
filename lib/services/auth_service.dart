@@ -29,13 +29,14 @@ class AuthService {
       Response response = await Dio().post(
         url,
         data: {
-          'memberName': email,
-          'nickName': name,
-          'password': password,
-          'email': email,
-          'birthday': '2023-06-27',
+          "memberName": name,
+          "nickName": name,
+          "password": password,
+          "email": email,
+          "birthday": "2023-06-27"
         },
       );
+      print(response.statusCode);
       return response;
     } catch (e) {
       print('An error occurred: $e');

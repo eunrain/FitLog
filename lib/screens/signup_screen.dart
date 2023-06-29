@@ -1,4 +1,6 @@
 import 'package:fitlog/components/sidemenu.dart';
+import 'package:fitlog/screens/login_screen.dart';
+import 'package:fitlog/widgets/showDialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/utility/validator.dart';
@@ -20,6 +22,23 @@ class _SignUpState extends State<SignUp> {
 
   final _formKey = GlobalKey<FormState>();
 
+  Future signUp() async {
+    if (_formKey.currentState!.validate()) {
+      final response = await AuthService().postSignUp(
+        _nameController.text,
+        _emailController.text,
+        _passwordController.text,
+      );
+      if (response != null) {
+        if (!mounted) return;
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const LogIn()));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,67 +46,67 @@ class _SignUpState extends State<SignUp> {
       drawer: const SideMenu(),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '이름을 입력해주세요';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '이름을 입력해주세요';
-                    }
-                  }),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-                validator: (value) {
-                  if (value == null || !Validator.isValidEmail(value)) {
-                    return '유효한 이메일 형식이 아닙니다';
-                  }
-                },
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                    ),
+                    validator: (value) {
+                      if (value == null || !Validator.isValidEmail(value)) {
+                        return '유효한 이메일 형식이 아닙니다';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.length < 6) {
+                        return '비밀번호는 6자 이상입니다';
+                      }
+                      return null;
+                    },
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 24.0),
+                  TextButton(
+                    onPressed: signUp,
+                    child: const Text('SignUp'),
+                  ),
+                  TextButton(
+                    child: const Text('LogIn'),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/logIn');
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-                validator: (value) {
-                  if (value == null || value.length < 6) {
-                    return '비밀번호는 6자 이상입니다';
-                  }
-                },
-                obscureText: true,
-              ),
-              const SizedBox(height: 24.0),
-              TextButton(
-                child: const Text('SignUp'),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    AuthService().postSignUp(
-                      _nameController.text,
-                      _emailController.text,
-                      _passwordController.text,
-                    );
-                  }
-                },
-              ),
-              TextButton(
-                child: const Text('LogIn'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/logIn');
-                },
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

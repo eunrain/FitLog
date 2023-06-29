@@ -14,8 +14,14 @@ class MealBox extends StatefulWidget {
 }
 
 class _MealBoxState extends State<MealBox> {
-  List<String> meals = [];
   String meal = '';
+  late String mealType;
+
+  @override
+  void initState() {
+    super.initState();
+    mealType = widget.mealType;
+  }
 
   void _mealInput() {
     showDialog(
@@ -23,22 +29,25 @@ class _MealBoxState extends State<MealBox> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('식단 추가'),
-          content: Column(
-            children: [
-              TextField(
-                onChanged: (value) {
-                  meal = value;
-                },
-                decoration: const InputDecoration(
-                  hintText: '식단 입력',
+          content: SizedBox(
+            height: 50,
+            child: Column(
+              children: [
+                TextField(
+                  onChanged: (value) {
+                    meal = value;
+                  },
+                  decoration: const InputDecoration(
+                    hintText: '식단 입력',
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                MainService().postMeal(meal, context);
+                MainService().postMeal(meal, mealType, context);
                 Navigator.pop(context);
               },
               child: const Text('추가'),
@@ -75,14 +84,14 @@ class _MealBoxState extends State<MealBox> {
               ),
             ),
             const SizedBox(height: 5),
-            Expanded(
-              child: ListView.builder(
-                itemCount: meals.length,
-                itemBuilder: (context, index) {
-                  return Text(meals[index]);
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: meals.length,
+            //     itemBuilder: (context, index) {
+            //       return Text(meals[index]);
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

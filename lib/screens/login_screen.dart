@@ -1,4 +1,5 @@
 import 'package:fitlog/components/sidemenu.dart';
+import 'package:fitlog/widgets/showDialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/utility/validator.dart';
@@ -39,30 +40,12 @@ class _LogInState extends State<LogIn> {
                 builder: (BuildContext context) => const HomeScreen()));
         return response;
       } else {
-        _showErrorDialog();
+        if (!mounted) return;
+        const ShowDialog(title: '로그인 실패', content: '아이디와 비밀번호를 확인해주세요.')
+            .show(context);
       }
       return null;
     }
-  }
-
-  void _showErrorDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('로그인 실패'),
-          content: const Text('아이디와 비밀번호를 확인해주세요.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(dialogContext);
-              },
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
