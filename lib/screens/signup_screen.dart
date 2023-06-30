@@ -1,6 +1,5 @@
 import 'package:fitlog/components/sidemenu.dart';
 import 'package:fitlog/screens/login_screen.dart';
-import 'package:fitlog/widgets/showDialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/utility/validator.dart';
@@ -16,7 +15,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _nameController = TextEditingController();
+  final _idController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -25,7 +24,7 @@ class _SignUpState extends State<SignUp> {
   Future signUp() async {
     if (_formKey.currentState!.validate()) {
       final response = await AuthService().postSignUp(
-        _nameController.text,
+        _idController.text,
         _emailController.text,
         _passwordController.text,
       );
@@ -54,13 +53,13 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 children: [
                   TextFormField(
-                    controller: _nameController,
+                    controller: _idController,
                     decoration: const InputDecoration(
-                      labelText: 'Name',
+                      labelText: 'ID',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '이름을 입력해주세요';
+                        return '아이디를 입력해주세요';
                       }
                       return null;
                     },

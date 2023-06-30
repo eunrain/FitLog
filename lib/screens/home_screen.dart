@@ -1,10 +1,9 @@
-import 'package:fitlog/provider/provider.dart';
+import 'package:fitlog/widgets/mealBox_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:fitlog/provider/provider.dart';
 import 'package:fitlog/widgets/calendar_widget.dart';
 import 'package:fitlog/components/appbar.dart';
 import 'package:fitlog/components/sidemenu.dart';
-import 'package:fitlog/widgets/mealBox_widget.dart';
-import 'package:fitlog/services/main_service.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,18 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> meals = [];
-
   @override
   void initState() {
     super.initState();
     Provider.of<MealProvider>(context, listen: false).getMeals(context);
-  }
-
-  List<String> _filterMeals(String mealType, List<String> meals) {
-    return meals
-        .where((meal) => meal.toLowerCase().contains(mealType.toLowerCase()))
-        .toList();
   }
 
   @override
@@ -39,17 +30,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Consumer<MealProvider>(
           builder: (context, mealProvider, _) {
-            final meals = mealProvider.meals;
-            return Column(
+            return const Column(
               children: [
-                const CalendarWidget(),
-                const SizedBox(height: 16),
+                CalendarWidget(),
+                SizedBox(height: 16),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           '오늘의 식사',
@@ -59,21 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      MealBox(
-                          date: DateTime.now(),
-                          mealType: '아침',
-                          meals: _filterMeals('아침', meals)),
-                      const SizedBox(height: 20),
-                      MealBox(
-                          date: DateTime.now(),
-                          mealType: '점심',
-                          meals: _filterMeals('점심', meals)),
-                      const SizedBox(height: 20),
-                      MealBox(
-                          date: DateTime.now(),
-                          mealType: '저녁',
-                          meals: _filterMeals('저녁', meals)),
+                      SizedBox(height: 20),
+                      MealBox(mealType: '아침'),
+                      SizedBox(height: 20),
+                      MealBox(mealType: '점심'),
+                      SizedBox(height: 20),
+                      MealBox(mealType: '저녁'),
                     ],
                   ),
                 ),

@@ -45,15 +45,15 @@ class MainService {
         url,
         options: Options(headers: {'Authorization': token}),
       );
-
       if (response.statusCode == 200) {
-        print('식단 가져와따');
         final mealData = response.data as List<dynamic>;
-        final meals =
-            mealData.map((meal) => meal['content'] as String).toList();
+        final meals = mealData.map((meal) {
+          final title = meal['title'] as String;
+          final content = meal['content'] as String;
+          return {'title': title, 'content': content};
+        }).toList();
         return meals;
       } else {
-        print('식단 없따');
         return [];
       }
     } catch (e) {

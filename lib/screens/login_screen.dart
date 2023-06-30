@@ -18,7 +18,7 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  final _emailController = TextEditingController();
+  final _idController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -26,7 +26,7 @@ class _LogInState extends State<LogIn> {
   Future login() async {
     if (_formKey.currentState!.validate()) {
       final response = await AuthService().postLogIn(
-        _emailController.text,
+        _idController.text,
         _passwordController.text,
       );
 
@@ -61,13 +61,13 @@ class _LogInState extends State<LogIn> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                controller: _emailController,
+                controller: _idController,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'ID',
                 ),
                 validator: (value) {
-                  if (value == null) {
-                    return '유효한 이메일 형식이 아닙니다';
+                  if (value == null || value.isEmpty) {
+                    return '아이디를 입력해주세요';
                   }
                 },
               ),

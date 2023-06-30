@@ -2,14 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthService {
-  Future postLogIn(email, password) async {
+  Future postLogIn(id, password) async {
     final url = '${dotenv.env['API_URL']}/members/login';
 
     try {
       Response response = await Dio().post(
         url,
         data: {
-          'memberName': email,
+          'memberName': id,
           'password': password,
         },
       );
@@ -22,15 +22,15 @@ class AuthService {
     }
   }
 
-  Future postSignUp(name, email, password) async {
+  Future postSignUp(id, email, password) async {
     final url = '${dotenv.env['API_URL']}/members/signup';
 
     try {
       Response response = await Dio().post(
         url,
         data: {
-          "memberName": name,
-          "nickName": name,
+          "memberName": id,
+          "nickName": id,
           "password": password,
           "email": email,
           "birthday": "2023-06-27"

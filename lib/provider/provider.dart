@@ -15,15 +15,19 @@ class AuthProvider extends ChangeNotifier {
 }
 
 class MealProvider with ChangeNotifier {
-  List<String> meals = [];
+  List<Map<String, String>> meals = [];
 
-  Future getMeals(BuildContext context) async {
+  Future<void> getMeals(BuildContext context) async {
     try {
       final fetchMeals = await MainService().getMeal(context);
-      meals = fetchMeals ?? []; // 가져온 식단 데이터로 상태 업데이트
-      notifyListeners(); // 상태 변경을 감지하고 리스너에 알림
+      meals = fetchMeals.map<Map<String, String>>((meal) {
+        final title = meal['title'] as String;
+        final content = meal['content'] as String;
+        return {'title': title, 'content': content};
+      }).toList();
+      notifyListeners();
     } catch (e) {
-      print('Failed to fetch meal: $e');
+      print('MealProvider error: $e');
     }
   }
 }
