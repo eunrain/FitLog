@@ -23,6 +23,12 @@ class _MealBoxState extends State<MealBox> {
     Provider.of<MealProvider>(context, listen: false).getMeals(context);
   }
 
+  void _deleteMeal(mealNum) {
+    MainService().deleteMeal(mealNum, context).then((_) {
+      Provider.of<MealProvider>(context, listen: false).getMeals(context);
+    });
+  }
+
   void _mealInput() {
     showDialog(
       context: context,
@@ -70,10 +76,8 @@ class _MealBoxState extends State<MealBox> {
     return Consumer<MealProvider>(
       builder: (context, mealProvider, _) {
         final meals = mealProvider.meals;
-        final filterMeals = meals
-            .where((meal) => meal['title'] == widget.mealType)
-            .map((meal) => meal['content'])
-            .toList();
+        final filterMeals =
+            meals.where((meal) => meal['title'] == widget.mealType).toList();
 
         return Container(
           width: 1000,
@@ -109,13 +113,37 @@ class _MealBoxState extends State<MealBox> {
                                 shrinkWrap: true,
                                 itemCount: filterMeals.length,
                                 itemBuilder: (context, index) {
-                                  return Text(
-                                    filterMeals[index]!,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                  final meal = filterMeals[index];
+                                  final content = meal['content'];
+                                  final mealNum = meal['mealNum'];
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        content,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            child: const Text('edit'),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              _deleteMeal(mealNum);
+                                            },
+                                            child: const Text('del'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   );
                                 },
                               ),

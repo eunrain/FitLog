@@ -15,16 +15,23 @@ class AuthProvider extends ChangeNotifier {
 }
 
 class MealProvider with ChangeNotifier {
-  List<Map<String, String>> meals = [];
+  List<Map<String, dynamic>> meals = [];
 
   Future<void> getMeals(BuildContext context) async {
     try {
-      final fetchMeals = await MainService().getMeal(context);
-      meals = fetchMeals.map<Map<String, String>>((meal) {
-        final title = meal['title'] as String;
-        final content = meal['content'] as String;
-        return {'title': title, 'content': content};
-      }).toList();
+      final List<dynamic>? fetchMeals = await MainService().getMeal(context);
+      meals = fetchMeals?.map<Map<String, dynamic>>((meal) {
+            final title = meal['title'] as String;
+            final content = meal['content'] as String;
+            final mealNum = meal['mealNum'] as int?;
+            return {
+              'title': title,
+              'content': content,
+              'mealNum': mealNum ?? 0
+            };
+          }).toList() ??
+          [];
+      print('provider: $meals');
       notifyListeners();
     } catch (e) {
       print('MealProvider error: $e');
