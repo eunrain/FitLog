@@ -9,8 +9,9 @@ class ChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-      primaryXAxis: DateTimeAxis(
-        minorTickLines: const MinorTickLines(size: 0), // 보조 눈금선 크기 0으로 설정
+      primaryXAxis: CategoryAxis(
+        labelPlacement: LabelPlacement.betweenTicks,
+        interval: 1, // x축 레이블 간격 설정
       ),
       primaryYAxis: NumericAxis(
         majorTickLines: const MajorTickLines(size: 0), // 주요 눈금선 크기 0으로 설정
