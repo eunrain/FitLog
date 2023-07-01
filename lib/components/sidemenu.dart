@@ -1,4 +1,5 @@
 import 'package:fitlog/screens/home_screen.dart';
+import 'package:fitlog/screens/weight_screen.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {
@@ -39,7 +40,14 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             title: const Text('My page'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const WeightScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
