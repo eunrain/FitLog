@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:fitlog/provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,10 @@ class MainService {
   Future postMeal(String meal, String mealType, BuildContext context) async {
     final url = '${dotenv.env['API_URL']}/todos';
 
+    final priority = Random().nextInt(10) + 1;
+
     final data = {
-      "priority": 1,
+      "priority": priority,
       "title": mealType,
       "subTitle": "부제목",
       "content": meal,
@@ -50,7 +53,8 @@ class MainService {
         final meals = mealData.map((meal) {
           final title = meal['title'] as String;
           final content = meal['content'] as String;
-          return {'title': title, 'content': content};
+          final mealNum = meal['priority'] as int;
+          return {'title': title, 'content': content, 'mealNum': mealNum};
         }).toList();
         return meals;
       } else {
@@ -59,6 +63,39 @@ class MainService {
     } catch (e) {
       print('getMeal : $e');
       return [];
+    }
+  }
+
+  Future patchMeal(String editMeal, int mealNum, BuildContext context) async {
+    final url = '${dotenv.env['API_URL']}/todos/$mealNum';
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    try {
+      Response response = await Dio().patch(
+        url,
+        data: editMeal,
+        options: Options(headers: {'Authorization': token}),
+      );
+      print(response.statusCode);
+    } catch (e) {
+      print('patchMeal : $e');
+    }
+  }
+
+  Future deleteMeal(mealNum, BuildContext context) async {
+    final url = '${dotenv.env['API_URL']}/todos/$mealNum';
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    try {
+      Response response = await Dio().delete(
+        url,
+        options: Options(headers: {'Authorization': token}),
+      );
+      print(response.statusCode);
+    } catch (e) {
+      print('patchMeal : $e');
     }
   }
 }
